@@ -2,6 +2,13 @@
 
 Proyecto de pruebas con Docker, frontend web y modelo LLM local.
 
+## Tecnologías
+
+- Docker
+- Dev Containers
+- Next.js / Web frontend
+- Ollama / LLM local
+
 ## Requisitos
 
 - Docker
