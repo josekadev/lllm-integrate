@@ -47,7 +47,7 @@ export default function AIPage() {
   return (
     <main className="min-h-screen bg-white p-6 text-black">
       <div className="mx-auto max-w-3xl">
-        s<h1 className="mb-6 text-3xl font-bold">IA joseka</h1>
+        <h1 className="mb-6 text-3xl font-bold">IA joseka</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <textarea
             value={prompt}
