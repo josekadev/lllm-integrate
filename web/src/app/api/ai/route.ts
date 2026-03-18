@@ -1,11 +1,18 @@
+import { NextResponse } from "next/server";
+
+type RequestBody = {
+  prompt?: string;
+};
+
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const prompt = body?.prompt;
+    const body: RequestBody = await req.json();
+    const prompt = body.prompt;
+
     console.log("Received prompt:", prompt);
 
-    if (!prompt || typeof prompt !== "string") {
-      return Response.json(
+    if (!prompt || typeof prompt !== "string" || !prompt.trim()) {
+      return NextResponse.json(
         { error: "El prompt es requerido" },
         { status: 400 },
       );
@@ -18,27 +25,31 @@ export async function POST(req: Request) {
       },
       body: JSON.stringify({
         model: "qwen2.5-coder:1.5b",
-        prompt,
+        prompt: prompt.trim(),
         stream: false,
       }),
     });
 
     if (!ollamaResponse.ok) {
       const errorText = await ollamaResponse.text();
-      return Response.json(
-        { error: "Error al consultar Ollama", detail: errorText },
+
+      return NextResponse.json(
+        {
+          error: "Error al consultar Ollama",
+          detail: errorText,
+        },
         { status: 500 },
       );
     }
 
     const data = await ollamaResponse.json();
 
-    return Response.json({
+    return NextResponse.json({
       response: data.response ?? "",
       model: data.model ?? "unknown",
     });
   } catch (error) {
-    return Response.json(
+    return NextResponse.json(
       {
         error: "Error interno del servidor",
         detail: error instanceof Error ? error.message : "Unknown error",
